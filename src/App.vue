@@ -40,7 +40,7 @@
 
       <v-btn
         icon
-        @click="$vuetify.theme.dark = !$vuetify.theme.dark"
+        @click="toggleDarkMode"
       >
         <v-icon v-if="$vuetify.theme.dark ">mdi-brightness-5</v-icon>
         <v-icon v-else>mdi-brightness-4</v-icon>
@@ -58,7 +58,8 @@
       absolute
       temporary
       right
-      width="400"      
+      width="300"
+      color="grey darken-4"
     >
       <v-container>
         <v-row>
@@ -72,12 +73,16 @@
             </v-col>
 
             <v-col
-              v-for="j in 3"
+              v-for="j in 2"
               :key="`${n}${j}`"
               cols="6"
-              md="4"
+              md="6"
             >
-              <v-sheet height="15vh"></v-sheet>
+              <v-sheet 
+              outlined color="grey light-2" 
+              rounded
+              height="15vh"
+              ></v-sheet>
             </v-col>
           </template>
         </v-row>
@@ -149,9 +154,10 @@
               label="Selct Version"
             ></v-select>
 
+
             <v-sparkline
               :fill="fill"
-              :gradient="selectedGradient"
+              :color="$vuetify.theme.dark ? '#E0E0E0': '#222'"
               :line-width="width"
               :padding="padding"
               :smooth="radius || false"
@@ -262,7 +268,7 @@
               rounded="lg"
             >
               
-                  <v-stepper non-linear>
+      <!-- <v-stepper non-linear>
       <v-stepper-header>
         <v-stepper-step
           editable
@@ -289,8 +295,14 @@
           Create an ad
         </v-stepper-step>
       </v-stepper-header>
-    </v-stepper>
-
+    </v-stepper> -->
+            <v-alert
+              dense
+              elevation="3"
+              outlined
+              type="info"
+            >Tutorial</v-alert>
+            <hover-view />
 
             </v-sheet>            
           </v-col>
@@ -319,17 +331,13 @@
 
 <script>
 
-  const gradients = [
-    ['#222'],
-    ['#42b3f4'],
-    ['red', 'orange', 'yellow'],
-    ['purple', 'violet'],
-    ['#00c6ff', '#F0F', '#FF0'],
-    ['#f72047', '#ffd200', '#1feaea'],
-  ]
+  import HoverView from '@/components/HoverView.vue'
 
   export default {
     name:'App',
+    components:{
+      HoverView
+    },
     data: () => ({
       drawer : false,
       group: null,
@@ -342,40 +350,38 @@
         'Updates',
       ],
       fill: true,
-      selectedGradient: gradients[4],
-      gradients,
       padding: 8,
       radius: 10,
       value: [0, 2, 5, 9, 5, 10, 3, 5, 0, 0, 1, 8, 2, 9, 0],
       width: 2,      
       news: [
         {
-          image: 'https://cdn-images-1.medium.com/max/1024/1*9C9hLji68wV373tk8okLYA.jpeg',
+          image: require('@/assets/sample.png'),
           title: 'TBI’s 5 Best: SF Mocktails to Finish Dry January Strong',
           category: 'Travel',
           keyword: 'Drinks',
 
         },
         {
-          image: 'https://cdn-images-1.medium.com/max/1024/1*BBNtYUieAqHoXKjiJ2mMjQ.png',
+          image: require('@/assets/sample.png'),
           title: 'PWAs on iOS 12.2 beta: the good, the bad, and the “not sure yet if good”',
           category: 'Technology',
           keyword: 'Phones',
         },
         {
-          image: 'https://cdn-images-1.medium.com/max/1024/1*rTEtei1UEmNqbq6evRsExw.jpeg',
+          image: require('@/assets/sample.png'),
           title: 'How to Get Media Mentions for Your Business',
           category: 'Media',
           keyword: 'Social',
         },
         {
-          image: 'https://cdn-images-1.medium.com/max/1024/1*FD2nkJewVeQnGf0ommQfrw.jpeg',
+          image: require('@/assets/sample.png'),
           title: 'The Pitfalls Of Outsourcing Self-Awareness To Artificial Intelligence',
           category: 'Technology',
           keyword: 'Military',
         },
         {
-          image: 'https://cdn-images-1.medium.com/max/1024/1*eogFpsVgNzXQLCVgFzT_-A.jpeg',
+          image: require('@/assets/sample.png'),
           title: 'Degrees of Freedom and Sudoko',
           category: 'Travel',
           keyword: 'Social',
@@ -387,7 +393,32 @@
     methods:{
       showLog(){
         console.log('show');
+      },
+      toggleDarkMode: function() {
+          this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
+          localStorage.setItem("darkTheme", this.$vuetify.theme.dark.toString());
       }
+    },
+    
+    mounted() {
+        const theme = localStorage.getItem("darkTheme");
+
+        // Check if the user has set the theme state before
+        if (theme) {
+            if (theme === "true") {
+                this.$vuetify.theme.dark = true;
+            } else {
+                this.$vuetify.theme.dark = false;
+            }
+        } 
+        else
+        {
+            this.$vuetify.theme.dark = false;
+            localStorage.setItem(
+                "darkTheme",
+                this.$vuetify.theme.dark.toString()
+            );
+        }
     },
 
     computed: {
