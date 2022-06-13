@@ -141,6 +141,7 @@
           </v-col>
           <v-col cols="12" md="5">
             <date-range />
+            <wafer-map />
           </v-col>
         </v-row>
       </v-container>
@@ -155,6 +156,7 @@ import LineChart from '@/components/LineChart.vue';
 import FavoriteDrawer from '@/components/FavoriteDrawer.vue';
 import ContentDrawer from '@/components/ContentDrawer.vue';
 import DateRange from '@/components/DateRange.vue';
+import WaferMap from '@/components/WaferMap.vue';
 
 export default {
   name: 'App',
@@ -165,6 +167,7 @@ export default {
     FavoriteDrawer,
     ContentDrawer,
     DateRange,
+    WaferMap,
   },
   data: () => ({
     group: null,
@@ -214,10 +217,6 @@ export default {
   methods: {
     showLog() {
       console.log('show');
-    },
-    toggleDarkMode: function () {
-      this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
-      localStorage.setItem('darkTheme', this.$vuetify.theme.dark.toString());
     },
   },
 
